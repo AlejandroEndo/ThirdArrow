@@ -35,7 +35,7 @@
                     "id": "17b3bc3b-0c5d-420f-aeba-a575da0ae12a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 }
             ],
             "bindings": [
@@ -120,7 +120,7 @@
                     "name": "",
                     "id": "cd7e1f24-683d-4755-96a4-f47b459472c9",
                     "path": "<Mouse>/rightButton",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
                     "action": "MouseAim",

@@ -20,9 +20,14 @@ public class PlayerController : MonoBehaviour {
     public Vector3 move;
     public Vector3 playerVelocity;
 
+    private void Awake() {
+        shootingScript = GetComponent<PlayerShooting>();
+        shootController.action.performed += ctx => shootingScript.HipsToShlouder();
+        shootController.action.canceled += ctx => shootingScript.ShoulderToHips();
+    }
+
     private void Start() {
         controller = GetComponent<CharacterController>();
-        shootingScript = GetComponent<PlayerShooting>();
     }
 
     void Update() {
@@ -43,13 +48,7 @@ public class PlayerController : MonoBehaviour {
 
         if (movement != Vector2.zero)
             PlayerRotation(movement);
-        Debug.Log(shootController.action.ReadValue<bool>());
-        if(shootController.action.ReadValue<float>() > 0.1 && groundedPlayer) {
-            OnAimToggle();
-        }
-        else if (aiming) {
-            OnAimToggle();
-        }
+        
 
     }
 
@@ -92,10 +91,12 @@ public class PlayerController : MonoBehaviour {
     private void OnEnable() {
         movementController.action.Enable();
         jumpController.action.Enable();
+        shootController.action.Enable();
     }
 
     private void OnDisable() {
         movementController.action.Disable();
         jumpController.action.Disable();
+        shootController.action.Disable();
     }
 }
