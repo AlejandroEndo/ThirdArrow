@@ -51,7 +51,7 @@ public class PlayerShooting : MonoBehaviour {
 
         //if (playerController.isAiming) {
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, distance)) {
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Shootable"))
+            if (hit.transform.gameObject.layer != LayerMask.NameToLayer("Player"))
                 target = hit.point;
         } else {
             target = Camera.main.transform.position + Camera.main.transform.forward * distance;
