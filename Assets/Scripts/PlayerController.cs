@@ -27,11 +27,11 @@ public class PlayerController : MonoBehaviour {
     private void Awake() {
         shootingScript = GetComponent<PlayerShooting>();
         aimController.action.performed += ctx => {
-            shootingScript.HipsToShlouder();
+            //shootingScript.HipsToShlouder();
             isAiming = true;
         };
         aimController.action.canceled += ctx => {
-            shootingScript.ShoulderToHips();
+            //shootingScript.ShoulderToHips();
             isAiming = false;
         };
         shootController.action.performed += ctx => {
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour {
             playerVelocity.y = 0f;
         }
 
-        Vector2 movement = isAiming ? Vector2.zero : movementController.action.ReadValue<Vector2>();
+        Vector2 movement = isAiming && groundedPlayer ? Vector2.zero : movementController.action.ReadValue<Vector2>();
         Locomotion(movement);
 
         if (jumpController.action.triggered && groundedPlayer && jumpEnable)
