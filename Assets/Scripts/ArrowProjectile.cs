@@ -11,8 +11,13 @@ public class ArrowProjectile : MonoBehaviour {
         rb.centerOfMass = transform.position;
     }
 
+    void Update() {
+        if(!rb.isKinematic)
+        transform.rotation =  Quaternion.LookRotation(rb.velocity, Vector3.up);
+    }
+
     public void Fire() {
-        rb.AddForce(transform.forward * (100 * Random.Range(1.3f, 1.7f)), ForceMode.Impulse);
+        rb.AddForce(transform.forward * (100 * Random.Range(1.3f, 1.7f) * force), ForceMode.Impulse);
         //source = GetComponent<Cinemachine.CinemachineImpulseSource>();
 
         //source.GenerateImpulse(Camera.main.transform.forward);
