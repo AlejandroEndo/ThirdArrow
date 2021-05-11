@@ -6,19 +6,29 @@ using Cinemachine;
 public class PlayerShooting : MonoBehaviour {
     //[SerializeField] private CinemachineVirtualCamera cam;
     [SerializeField] private CinemachineFreeLook freeLookCamera;
+    [SerializeField] private GameObject collidePrefab;
+    [SerializeField] private GameObject fireHole;
+    private PlayerController playerController;
+
 
     [SerializeField] private float aimValue;
     [SerializeField] private float speed;
-    private float hipValue;
     [SerializeField] private bool aiming = false;
+    [Range(0.1f, 2f)]
+    [SerializeField] private float coolDown;
+    private float nextShoot = 0f;
+    RaycastHit hit;
 
     List<float> aimValues = new List<float>();
     List<float> hipValues = new List<float>();
+
+
     private void Awake() {
     }
 
     void Start() {
-        hipValue = freeLookCamera.m_Lens.FieldOfView;
+        playerController = GetComponent<PlayerController>();
+
         for(int i = 0; i < freeLookCamera.m_Orbits.Length; i++) {
             float a = freeLookCamera.m_Orbits[i].m_Radius;
             aimValues.Add(a - aimValue);
@@ -27,30 +37,25 @@ public class PlayerShooting : MonoBehaviour {
     }
 
     void Update() {
-        if (aiming) {
-        } else {
+        if (nextShoot < coolDown) nextShoot += Time.deltaTime;
+        if (playerController.isShootPressed && playerController.isAiming && nextShoot >= coolDown) {
+            nextShoot = 0f;
+            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, 100.0f)) {
+                Vector3 dis = hit.point - fireHole.transform.position;
+                
+                var arrow = Instantiate(collidePrefab, fireHole.transform.position, Quaternion.LookRotation(dis));
+                arrow.GetComponent<ArrowProjectile>().Fire();
+            }
         }
     }
 
     public void HipsToShlouder() {
-        //freeLookCamera.m_Lens.FieldOfView = hipValue;
-        /*
-        aiming = true;
-            if (freeLookCamera.m_Lens.FieldOfView > aimValue)
-                freeLookCamera.m_Lens.FieldOfView = Mathf.Lerp(freeLookCamera.m_Lens.FieldOfView, aimValue, speed);
-            */
         for (int i = 0; i < freeLookCamera.m_Orbits.Length; i++) {
             freeLookCamera.m_Orbits[i].m_Radius = aimValues[i];
         }
     }
 
     public void ShoulderToHips() {
-        /*
-        aiming = false;
-            if (freeLookCamera.m_Lens.FieldOfView < hipValue)
-                freeLookCamera.m_Lens.FieldOfView = Mathf.Lerp(freeLookCamera.m_Lens.FieldOfView, hipValue, speed);
-        //freeLookCamera.m_Lens.FieldOfView = aimValue;
-        */
         for (int i = 0; i < freeLookCamera.m_Orbits.Length; i++) {
             freeLookCamera.m_Orbits[i].m_Radius = hipValues[i];
         }

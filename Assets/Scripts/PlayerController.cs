@@ -3,27 +3,43 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour {
-    [SerializeField] InputActionReference movementController;
-    [SerializeField] InputActionReference jumpController;
-    [SerializeField] InputActionReference shootController;
-    [SerializeField] private float playerSpeed = 2.0f;
-    [SerializeField] private float jumpHeight = 1.0f;
-    [SerializeField] private float gravityValue = -9.81f;
-    [SerializeField] private float rotationSpeed = 4f;
-    [SerializeField] private bool jumpEnable = true;
-    [SerializeField] private bool aiming = false;
-    private CharacterController controller;
-    private PlayerShooting shootingScript;
     [SerializeField] private Transform cameraMainTransform;
-
-    public bool groundedPlayer;
+    [SerializeField] private float gravityValue = -9.81f;
+    [Header("Locomotion")]
+    [SerializeField] InputActionReference movementController;
+    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float rotationSpeed = 4f;
     public Vector3 move;
     public Vector3 playerVelocity;
+    [Header("Jump")]
+    [SerializeField] InputActionReference jumpController;
+    [SerializeField] private float jumpHeight = 1.0f;
+    [SerializeField] private bool jumpEnable = true;
+    public bool groundedPlayer;
+    [Header("Aim and Shoot")]
+    [SerializeField] InputActionReference shootController;
+    [SerializeField] InputActionReference aimController;
+    private CharacterController controller;
+    private PlayerShooting shootingScript;
+    public bool isAiming;
+    public bool isShootPressed = false;
 
     private void Awake() {
         shootingScript = GetComponent<PlayerShooting>();
-        shootController.action.performed += ctx => shootingScript.HipsToShlouder();
-        shootController.action.canceled += ctx => shootingScript.ShoulderToHips();
+        aimController.action.performed += ctx => {
+            shootingScript.HipsToShlouder();
+            isAiming = true;
+        };
+        aimController.action.canceled += ctx => {
+            shootingScript.ShoulderToHips();
+            isAiming = false;
+        };
+        shootController.action.performed += ctx => {
+            isShootPressed = true;
+        };
+        shootController.action.canceled += ctx => {
+            isShootPressed = false;
+        };
     }
 
     private void Start() {
@@ -36,7 +52,7 @@ public class PlayerController : MonoBehaviour {
             playerVelocity.y = 0f;
         }
 
-        Vector2 movement = movementController.action.ReadValue<Vector2>();
+        Vector2 movement = isAiming ? Vector2.zero : movementController.action.ReadValue<Vector2>();
         Locomotion(movement);
 
         if (jumpController.action.triggered && groundedPlayer && jumpEnable)
@@ -46,10 +62,8 @@ public class PlayerController : MonoBehaviour {
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
 
-        if (movement != Vector2.zero)
+        if (movement != Vector2.zero || isAiming)
             PlayerRotation(movement);
-        
-
     }
 
     private void Locomotion(Vector2 movement) {
@@ -75,15 +89,6 @@ public class PlayerController : MonoBehaviour {
         transform.rotation = Quaternion.Lerp(transform.rotation, angle, Time.deltaTime * rotationSpeed);
     }
 
-    public void OnAimToggle() {
-        if (aiming) {
-            shootingScript.HipsToShlouder();
-        } else {
-            shootingScript.ShoulderToHips();
-        }
-        aiming = !aiming;
-    }
-
     private void EnableJump() {
         jumpEnable = true;
     }
@@ -92,11 +97,13 @@ public class PlayerController : MonoBehaviour {
         movementController.action.Enable();
         jumpController.action.Enable();
         shootController.action.Enable();
+        aimController.action.Enable();
     }
 
     private void OnDisable() {
         movementController.action.Disable();
         jumpController.action.Disable();
         shootController.action.Disable();
+        aimController.action.Disable();
     }
 }
