@@ -282,13 +282,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.82
-  m_Radius: 0.31
+  m_Height: 1.7
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 1.01, z: 0}
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!114 &9051663322004317862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
   gravityValue: -9.81
   movementController: {fileID: -6455288106988369441, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
   playerSpeed: 5
-  rotationSpeed: 5
+  rotationSpeed: 20
   move: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
   jumpController: {fileID: 7906500445456345679, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
