@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Jump")]
     [SerializeField] InputActionReference jumpController;
     [SerializeField] private float jumpHeight = 1.0f;
+    [SerializeField] private float jumpCoolDown;
     [SerializeField] private bool jumpEnable = true;
     public bool groundedPlayer;
     [Header("Aim and Shoot")]
@@ -80,7 +81,7 @@ public class PlayerController : MonoBehaviour {
         move *= 0.9f;
         groundedPlayer = false;
         jumpEnable = false;
-        Invoke("EnableJump", 2f);
+        Invoke("EnableJump", jumpCoolDown);
     }
 
     private void PlayerRotation(Vector2 movement) {

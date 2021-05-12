@@ -8,8 +8,16 @@ public class PlayerShooting : MonoBehaviour {
     [Header("Aiming")]
     [SerializeField] private CinemachineFreeLook freeLookCamera;
     [SerializeField] private GameObject lookAt;
+    [SerializeField] private GameObject followAt;
     [SerializeField] private GameObject crossHair;
     [SerializeField] private float aimValue;
+    [Range(0.1f, 5f)]
+    public float aimSpeed;
+    private Vector3 followAimPos;
+    private Vector3 followHipPos;
+    private Vector3 lookAimPos;
+    private Vector3 lookHipPos;
+
     [Header("Arrow")]
     [SerializeField] private GameObject fireHole;
     [SerializeField] private GameObject arrowPrefab;
@@ -19,6 +27,7 @@ public class PlayerShooting : MonoBehaviour {
     [Range(0.5f, 3f)]
     public float chargeShootLimit;
     public float currentShootCharge = 0f;
+
     [Header("Debug")]
     [SerializeField] private GameObject collidePrefab;
     private PlayerController playerController;
@@ -38,6 +47,11 @@ public class PlayerShooting : MonoBehaviour {
     void Start() {
         playerController = GetComponent<PlayerController>();
         anim = GetComponent<Animator>();
+
+        followAimPos = followAt.transform.localPosition;
+        followHipPos = new Vector3(0f, followAt.transform.localPosition.y, followAt.transform.localPosition.z);
+        lookAimPos = lookAt.transform.localPosition;
+        lookHipPos = new Vector3(0f, lookAt.transform.localPosition.y, lookAt.transform.localPosition.z);
 
         for (int i = 0; i < freeLookCamera.m_Orbits.Length; i++) {
             float a = freeLookCamera.m_Orbits[i].m_Radius;
@@ -92,14 +106,22 @@ public class PlayerShooting : MonoBehaviour {
     }
 
     public void HipsToShlouder() {
+        lookAt.transform.localPosition = Vector3.Lerp(lookAt.transform.localPosition, lookAimPos, Time.deltaTime * aimSpeed);
+        followAt.transform.localPosition = Vector3.Lerp(followAt.transform.localPosition, followAimPos, Time.deltaTime * aimSpeed);
         for (int i = 0; i < freeLookCamera.m_Orbits.Length; i++) {
-            freeLookCamera.m_Orbits[i].m_Radius = aimValues[i];
+            if (freeLookCamera.m_Orbits[i].m_Radius > aimValues[i]) {
+                freeLookCamera.m_Orbits[i].m_Radius -= Time.deltaTime * aimSpeed;
+            }
         }
     }
 
     public void ShoulderToHips() {
+        lookAt.transform.localPosition = Vector3.Lerp(lookAt.transform.localPosition, lookHipPos, Time.deltaTime * aimSpeed);
+        followAt.transform.localPosition = Vector3.Lerp(followAt.transform.localPosition, followHipPos, Time.deltaTime * aimSpeed);
         for (int i = 0; i < freeLookCamera.m_Orbits.Length; i++) {
-            freeLookCamera.m_Orbits[i].m_Radius = hipValues[i];
+            if (freeLookCamera.m_Orbits[i].m_Radius < hipValues[i]) {
+                freeLookCamera.m_Orbits[i].m_Radius += Time.deltaTime * aimSpeed;
+            }
         }
     }
 }

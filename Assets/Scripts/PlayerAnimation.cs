@@ -30,9 +30,9 @@ public class PlayerAnimation : MonoBehaviour {
         anim.SetFloat("shootCharge_f", playerShooting.currentShootCharge / playerShooting.chargeShootLimit);
 
         if (playerController.isAiming && playerController.groundedPlayer) {
-            aimWeight = aimWeight >= 1 ? 1 : aimWeight + Time.time * 0.025f;
+            aimWeight = aimWeight >= 1 ? 1 : aimWeight + Time.deltaTime * playerShooting.aimSpeed;
         } else {
-            aimWeight = aimWeight <= 0 ? 0 : aimWeight - Time.time * 0.025f;
+            aimWeight = aimWeight <= 0 ? 0 : aimWeight - Time.deltaTime * playerShooting.aimSpeed;
         }
     }
 

@@ -12,8 +12,8 @@ public class ArrowProjectile : MonoBehaviour {
     }
 
     void Update() {
-        if(!rb.isKinematic)
-        transform.rotation =  Quaternion.LookRotation(rb.velocity, Vector3.up);
+        if (!rb.isKinematic && rb.velocity.magnitude > 0.1f)
+            transform.rotation = Quaternion.LookRotation(rb.velocity, Vector3.up);
     }
 
     public void Fire() {

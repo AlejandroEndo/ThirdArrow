@@ -150,7 +150,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 51715d426647c0a469aa54fd0d386aa6, type: 2}
+  - {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -285,7 +285,7 @@ CharacterController:
   m_Height: 1.82
   m_Radius: 0.31
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.01, z: 0}
@@ -310,6 +310,7 @@ MonoBehaviour:
   playerVelocity: {x: 0, y: 0, z: 0}
   jumpController: {fileID: 7906500445456345679, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
   jumpHeight: 1
+  jumpCoolDown: 0.5
   jumpEnable: 1
   groundedPlayer: 0
   shootController: {fileID: -7891216811558392072, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
@@ -346,15 +347,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   freeLookCamera: {fileID: 0}
   lookAt: {fileID: 9051663322165602753}
+  followAt: {fileID: 9051663320557219829}
   crossHair: {fileID: 0}
   aimValue: 1.5
+  aimSpeed: 5
   fireHole: {fileID: 9051663320789966751}
   arrowPrefab: {fileID: 8248786147213413467, guid: b26a2326bb73bbf47a6b398168040b98, type: 3}
   coolDown: 0.5
   nextShoot: 0
   chargeShootLimit: 1
   currentShootCharge: 0
-  collidePrefab: {fileID: 0}
+  collidePrefab: {fileID: 4540776164856471403, guid: 43179fdc744a4e040a396761ae3732d7, type: 3}
   anim: {fileID: 3240166743912743097}
   distance: 450
 --- !u!120 &9051663322004317851
@@ -633,7 +636,7 @@ PrefabInstance:
     - target: {fileID: -8394893481037000102, guid: 9784c601b9db1ef4383272ca59f29a7d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 51715d426647c0a469aa54fd0d386aa6, type: 2}
+      objectReference: {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
     - target: {fileID: 919132149155446097, guid: 9784c601b9db1ef4383272ca59f29a7d, type: 3}
       propertyPath: m_Name
       value: Carcaj_Model
@@ -738,7 +741,7 @@ PrefabInstance:
     - target: {fileID: 3135237968945660833, guid: 30f338f5f79c84941b44e64a97a0a5c6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 51715d426647c0a469aa54fd0d386aa6, type: 2}
+      objectReference: {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
     - target: {fileID: 4213953920460507327, guid: 30f338f5f79c84941b44e64a97a0a5c6, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -836,7 +839,7 @@ PrefabInstance:
     - target: {fileID: -7698105801758156280, guid: 58a5fc40f090779458dd2ec044815ae4, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1029b38bdee65ba4482ab14d2b7a9f04, type: 2}
+      objectReference: {fileID: 2100000, guid: ad3e2ff1cde2d2c44ad0956065732a55, type: 2}
     - target: {fileID: -7657966619581158213, guid: 58a5fc40f090779458dd2ec044815ae4, type: 3}
       propertyPath: m_Layer
       value: 3
