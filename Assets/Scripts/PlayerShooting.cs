@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerShooting : MonoBehaviour {
     //[SerializeField] private CinemachineVirtualCamera cam;
@@ -17,6 +18,7 @@ public class PlayerShooting : MonoBehaviour {
     private Vector3 followHipPos;
     private Vector3 lookAimPos;
     private Vector3 lookHipPos;
+    [SerializeField] private Rig ikRig;
 
     [Header("Arrow")]
     [SerializeField] private GameObject fireHole;
@@ -70,10 +72,11 @@ public class PlayerShooting : MonoBehaviour {
         } else {
             target = Camera.main.transform.position + Camera.main.transform.forward * distance;
         }
-        collidePrefab.transform.position = target;
         //}
         //Debug.Log(Camera.main.transform.forward);
         if (playerController.isAiming && playerController.groundedPlayer) {
+            ikRig.weight = 1;
+            collidePrefab.transform.position = Vector3.Lerp(collidePrefab.transform.position, target, 0.05f);  
             HipsToShlouder();
             crossHair.SetActive(true);
             if (playerController.isShootPressed) {
@@ -84,6 +87,7 @@ public class PlayerShooting : MonoBehaviour {
                 currentShootCharge = 0f;
             }
         } else {
+            ikRig.weight = 0;
             ShoulderToHips();
             crossHair.SetActive(false);
         }
