@@ -3,20 +3,31 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour {
-    [SerializeField] private Transform cameraMainTransform;
-    [SerializeField] private float gravityValue = -9.81f;
+    private Transform cameraMainTransform;
+
     [Header("Locomotion")]
     [SerializeField] InputActionReference movementController;
+    [SerializeField] private PhysicMaterial physicMaterial;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float rotationSpeed = 4f;
     public Vector3 move;
     public Vector3 playerVelocity;
+
+    [Header("Slopes")]
+    [SerializeField] private float gravityValue = -9.81f;
+    [SerializeField] private float slopeRayLength = 2f;
+    [SerializeField] private float slopeForce;
+    [SerializeField] private float stepOffset;
+
     [Header("Jump")]
     [SerializeField] InputActionReference jumpController;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float jumpCoolDown;
+    [Range(0.0f, 1f)]
+    [SerializeField] private float onAirSpeedModifier;
     [SerializeField] private bool jumpEnable = true;
     public bool groundedPlayer;
+
     [Header("Aim and Shoot")]
     [SerializeField] InputActionReference shootController;
     [SerializeField] InputActionReference aimController;
@@ -28,11 +39,9 @@ public class PlayerController : MonoBehaviour {
     private void Awake() {
         shootingScript = GetComponent<PlayerShooting>();
         aimController.action.performed += ctx => {
-            //shootingScript.HipsToShlouder();
             isAiming = true;
         };
         aimController.action.canceled += ctx => {
-            //shootingScript.ShoulderToHips();
             isAiming = false;
         };
         shootController.action.performed += ctx => {
@@ -44,13 +53,16 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Start() {
+        cameraMainTransform = Camera.main.transform;
         controller = GetComponent<CharacterController>();
+        controller.material = physicMaterial;
     }
 
     void Update() {
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0) {
             playerVelocity.y = 0f;
+            controller.stepOffset = stepOffset;
         }
 
         Vector2 movement = isAiming && groundedPlayer ? Vector2.zero : movementController.action.ReadValue<Vector2>();
@@ -60,11 +72,21 @@ public class PlayerController : MonoBehaviour {
             Jump();
 
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
+        float extraForce = IsGoinDown() && movement != Vector2.zero ? slopeForce : 1;
+        playerVelocity.y += gravityValue * Time.deltaTime * extraForce;
         controller.Move(playerVelocity * Time.deltaTime);
 
         if (movement != Vector2.zero || isAiming)
             PlayerRotation(movement);
+    }
+
+    private bool IsGoinDown() {
+        if (controller.velocity.y > 0) return false;
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, Vector3.down, out hit, slopeRayLength)) {
+            if (hit.normal != Vector3.up) return true;
+        }
+        return false;
     }
 
     private void Locomotion(Vector2 movement) {
@@ -77,11 +99,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Jump() {
+        controller.stepOffset = 0f;
         playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
-        move *= 0.9f;
+        move *= onAirSpeedModifier;
         groundedPlayer = false;
         jumpEnable = false;
-        Invoke("EnableJump", jumpCoolDown);
+        Invoke(nameof(EnableJump), jumpCoolDown);
     }
 
     private void PlayerRotation(Vector2 movement) {

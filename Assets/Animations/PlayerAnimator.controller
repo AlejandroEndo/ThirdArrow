@@ -87,7 +87,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fall B Loop
+  m_Name: Fall Loop
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -114,7 +114,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fall A Land To Standing Idle 01
+  m_Name: Fall To Land
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -171,7 +171,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Run_Forward
+  m_Name: Run Forward
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -362,17 +362,20 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 4
+    m_ConditionEvent: yVel_f
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7294391791576628698}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.4422716
-  m_TransitionOffset: 0
-  m_ExitTime: 0.39562505
-  m_HasExitTime: 1
+  m_TransitionDuration: 0.29284638
+  m_TransitionOffset: 0.050862044
+  m_ExitTime: 0.46960625
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -569,7 +572,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.38895357
+  m_TransitionDuration: 0.14926016
   m_TransitionOffset: 0
   m_ExitTime: 0.80004716
   m_HasExitTime: 0
@@ -853,9 +856,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.2552781
-  m_TransitionOffset: 0.01601263
-  m_ExitTime: 0.9492302
+  m_TransitionDuration: 0.34861135
+  m_TransitionOffset: 0.23419431
+  m_ExitTime: 0.93080914
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

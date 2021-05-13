@@ -72,9 +72,9 @@ MonoBehaviour:
       m_Item7:
         transform: {fileID: 0}
         weight: 0
-    m_Offset: {x: 0, y: 0, z: 0}
-    m_MinLimit: -180
-    m_MaxLimit: 180
+    m_Offset: {x: 15, y: 10, z: 0}
+    m_MinLimit: -30
+    m_MaxLimit: 50
     m_AimAxis: 1
     m_UpAxis: 2
     m_WorldUpType: 0
@@ -83,7 +83,7 @@ MonoBehaviour:
     m_MaintainOffset: 0
     m_ConstrainedAxes:
       x: 1
-      y: 1
+      y: 0
       z: 1
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
@@ -203,14 +203,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9051663320609726415}
-  m_LocalRotation: {x: -0.6425062, y: -0.25529101, z: -0.21480437, w: 0.6898345}
-  m_LocalPosition: {x: -3.8, y: 28.3, z: 0.1}
+  m_LocalRotation: {x: -0.6207626, y: -0.26184162, z: -0.20676874, w: 0.7094643}
+  m_LocalPosition: {x: -3.6, y: 28.8, z: 2.4}
   m_LocalScale: {x: 83.333336, y: 83.33332, z: 83.33333}
   m_Children:
   - {fileID: 9051663320796022090}
   m_Father: {fileID: 9051663322422657348}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -84.952, y: -59.98, z: 21.111}
+  m_LocalEulerAnglesHint: {x: -81.532, y: -51.241, z: 12.429}
 --- !u!1 &9051663320789966751
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,14 +428,14 @@ CharacterController:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9051663322004317860}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 51f9dbadd8eaf8a448cde18b2ac09108, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.7
   m_Radius: 0.3
-  m_SlopeLimit: 45
-  m_StepOffset: 0.5
+  m_SlopeLimit: 60
+  m_StepOffset: 0
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.95, z: 0}
@@ -454,12 +454,16 @@ MonoBehaviour:
   cameraMainTransform: {fileID: 0}
   gravityValue: -9.81
   movementController: {fileID: -6455288106988369441, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
+  physicMaterial: {fileID: 13400000, guid: 8708d00b51a6fd041b794bfead429170, type: 2}
   playerSpeed: 5
   rotationSpeed: 20
   move: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
+  slopeRayLength: 0.5
+  slopeForce: 50
+  stepOffset: 0.5
   jumpController: {fileID: 7906500445456345679, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
-  jumpHeight: 1
+  jumpHeight: 1.2
   jumpCoolDown: 0.5
   jumpEnable: 1
   groundedPlayer: 0
