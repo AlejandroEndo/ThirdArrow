@@ -19,6 +19,7 @@ public class PlayerAnimation : MonoBehaviour {
     void Update() {
         anim.SetFloat("zVel_f", Mathf.Abs(playerController.move.magnitude) / playerController.sprintSpeed);
         anim.SetFloat("yVel_f", playerController.playerVelocity.y);
+        anim.SetFloat("onAirVel_f", playerController.move.magnitude);
         anim.SetBool("isGrounded_b", playerController.groundedPlayer);
         Aiming();
     }

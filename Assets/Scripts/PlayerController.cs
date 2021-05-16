@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float rotationSpeed = 4f;
     public Vector3 move;
     public Vector3 playerVelocity;
+    private Vector3 characterControllerVel;
+    public Vector3 CharacterControllerVel { get { return characterControllerVel; } }
 
     [Header("Sprint")]
     [SerializeField] InputActionReference sprintController;
@@ -36,7 +38,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Aim and Shoot")]
     [SerializeField] InputActionReference shootController;
     [SerializeField] InputActionReference aimController;
-    
+
     private CharacterController controller;
     private PlayerShooting shootingScript;
     public bool isAiming;
@@ -71,6 +73,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
+        characterControllerVel = new Vector3(controller.velocity.x, controller.velocity.y, controller.velocity.z);
         groundedPlayer = controller.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0) {
             playerVelocity.y = 0f;
@@ -95,7 +98,7 @@ public class PlayerController : MonoBehaviour {
     private bool IsGoinDown() {
         if (controller.velocity.y > 0) return false;
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, Vector3.down, out hit, slopeRayLength)) {
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, slopeRayLength)) {
             if (hit.normal != Vector3.up) return true;
         }
         return false;
