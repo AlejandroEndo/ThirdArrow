@@ -8,10 +8,15 @@ public class PlayerController : MonoBehaviour {
     [Header("Locomotion")]
     [SerializeField] InputActionReference movementController;
     [SerializeField] private PhysicMaterial physicMaterial;
-    [SerializeField] private float playerSpeed = 2.0f;
+    [SerializeField] private float playerSpeed = 2f;
     [SerializeField] private float rotationSpeed = 4f;
     public Vector3 move;
     public Vector3 playerVelocity;
+
+    [Header("Sprint")]
+    [SerializeField] InputActionReference sprintController;
+    public float sprintSpeed = 4f;
+    [SerializeField] private bool onSprint = false;
 
     [Header("Slopes")]
     [SerializeField] private float gravityValue = -9.81f;
@@ -31,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Aim and Shoot")]
     [SerializeField] InputActionReference shootController;
     [SerializeField] InputActionReference aimController;
+    
     private CharacterController controller;
     private PlayerShooting shootingScript;
     public bool isAiming;
@@ -49,6 +55,12 @@ public class PlayerController : MonoBehaviour {
         };
         shootController.action.canceled += ctx => {
             isShootPressed = false;
+        };
+        sprintController.action.performed += ctx => {
+            onSprint = true;
+        };
+        sprintController.action.canceled += ctx => {
+            onSprint = false;
         };
     }
 
@@ -94,8 +106,9 @@ public class PlayerController : MonoBehaviour {
             move = new Vector3(movement.x, 0, movement.y).normalized;
             move = cameraMainTransform.forward * move.z + cameraMainTransform.right * move.x;
             move.y = 0f;
+            move *= onSprint ? sprintSpeed : playerSpeed;
         }
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        controller.Move(move * Time.deltaTime);
     }
 
     private void Jump() {
@@ -122,6 +135,7 @@ public class PlayerController : MonoBehaviour {
         jumpController.action.Enable();
         shootController.action.Enable();
         aimController.action.Enable();
+        sprintController.action.Enable();
     }
 
     private void OnDisable() {
@@ -129,5 +143,6 @@ public class PlayerController : MonoBehaviour {
         jumpController.action.Disable();
         shootController.action.Disable();
         aimController.action.Disable();
+        sprintController.action.Disable();
     }
 }

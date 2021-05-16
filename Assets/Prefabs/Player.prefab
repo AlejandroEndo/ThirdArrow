@@ -451,20 +451,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 221428619ec6ca6418c547dda39bca2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraMainTransform: {fileID: 0}
-  gravityValue: -9.81
   movementController: {fileID: -6455288106988369441, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
   physicMaterial: {fileID: 13400000, guid: 8708d00b51a6fd041b794bfead429170, type: 2}
   playerSpeed: 5
   rotationSpeed: 20
   move: {x: 0, y: 0, z: 0}
   playerVelocity: {x: 0, y: 0, z: 0}
+  sprintController: {fileID: 0}
+  sprintSpeed: 4
+  onSprint: 0
+  gravityValue: -9.81
   slopeRayLength: 0.5
   slopeForce: 50
   stepOffset: 0.5
   jumpController: {fileID: 7906500445456345679, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
   jumpHeight: 1.2
   jumpCoolDown: 0.5
+  onAirSpeedModifier: 0
   jumpEnable: 1
   groundedPlayer: 0
   shootController: {fileID: -7891216811558392072, guid: bc8a4068e18bc674f86456b6b5df3714, type: 3}
