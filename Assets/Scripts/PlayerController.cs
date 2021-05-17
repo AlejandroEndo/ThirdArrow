@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour {
-    private Transform cameraMainTransform;
 
     [Header("Locomotion")]
     [SerializeField] InputActionReference movementController;
@@ -38,6 +37,7 @@ public class PlayerController : MonoBehaviour {
     [Header("Aim and Shoot")]
     [SerializeField] InputActionReference shootController;
     [SerializeField] InputActionReference aimController;
+    private Transform cameraMainTransform;
 
     private CharacterController controller;
     private PlayerShooting shootingScript;

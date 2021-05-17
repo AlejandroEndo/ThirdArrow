@@ -7,10 +7,10 @@ using UnityEngine.Animations.Rigging;
 public class PlayerShooting : MonoBehaviour {
     //[SerializeField] private CinemachineVirtualCamera cam;
     [Header("Aiming")]
-    [SerializeField] private CinemachineFreeLook freeLookCamera;
+    private CinemachineFreeLook freeLookCamera;
+    private GameObject crossHair;
     [SerializeField] private GameObject lookAt;
     [SerializeField] private GameObject followAt;
-    [SerializeField] private GameObject crossHair;
     [SerializeField] private float aimValue;
     [Range(0.1f, 5f)]
     public float aimSpeed;
@@ -48,7 +48,9 @@ public class PlayerShooting : MonoBehaviour {
 
     void Start() {
         playerController = GetComponent<PlayerController>();
-        anim = GetComponent<Animator>();
+        freeLookCamera = GameObject.FindGameObjectWithTag("CineMachine").GetComponent<CinemachineFreeLook>();
+        crossHair = GameObject.FindGameObjectWithTag("CrossHair");
+        //anim = GetComponent<Animator>();
 
         followAimPos = followAt.transform.localPosition;
         followHipPos = new Vector3(0f, followAt.transform.localPosition.y, followAt.transform.localPosition.z);

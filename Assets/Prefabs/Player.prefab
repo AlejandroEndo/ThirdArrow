@@ -30,84 +30,6 @@ Transform:
   m_Father: {fileID: 543450653215292188}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &1018556054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132149547377062}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ImpulseDefinition:
-    m_ImpulseChannel: 0
-    m_RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
-    m_AmplitudeGain: 1
-    m_FrequencyGain: 1
-    m_RepeatMode: 0
-    m_Randomize: 1
-    m_TimeEnvelope:
-      m_AttackShape:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 34
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      m_DecayShape:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 3
-          time: 0
-          value: 0
-          inSlope: 2
-          outSlope: 2
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      m_AttackTime: 0
-      m_SustainTime: 0.63
-      m_DecayTime: 0.5
-      m_ScaleWithImpact: 1
-      m_HoldForever: 0
-    m_ImpactRadius: 100
-    m_DirectionMode: 0
-    m_DissipationMode: 2
-    m_DissipationDistance: 1000
-    m_PropagationSpeed: 343
 --- !u!1 &582228803
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +328,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
+  - {fileID: 2100002, guid: e3ae06a3979f53046aa05330d69de1fa, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -787,6 +709,84 @@ MonoBehaviour:
   - m_Rig: {fileID: 582228805}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &1018556054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149547377062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 0
+    m_RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.63
+      m_DecayTime: 0.5
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
+    m_PropagationSpeed: 343
 --- !u!1 &1039890583510968075
 GameObject:
   m_ObjectHideFlags: 0
@@ -1865,7 +1865,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
+  - {fileID: 2100010, guid: ff6dc36862fe41641bb21568d92147c9, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2309,7 +2309,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ad3e2ff1cde2d2c44ad0956065732a55, type: 2}
+  - {fileID: 2100000, guid: cd71291c91c8cce499cb663b5db9970e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3178,7 +3178,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3416,9 +3416,9 @@ LineRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 82f22cfcd3162714f97430d3043d810f, type: 2}
-  - {fileID: 2100000, guid: 51396a457ace7ca459c474a7d7ed6ceb, type: 2}
-  - {fileID: 2100000, guid: 82f22cfcd3162714f97430d3043d810f, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3729,7 +3729,7 @@ PrefabInstance:
     - target: {fileID: 3135237968945660833, guid: 30f338f5f79c84941b44e64a97a0a5c6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
+      objectReference: {fileID: 2100008, guid: ff6dc36862fe41641bb21568d92147c9, type: 3}
     - target: {fileID: 4213953920460507327, guid: 30f338f5f79c84941b44e64a97a0a5c6, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -3812,7 +3812,7 @@ PrefabInstance:
     - target: {fileID: -8394893481037000102, guid: 9784c601b9db1ef4383272ca59f29a7d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
+      objectReference: {fileID: 2100000, guid: cd71291c91c8cce499cb663b5db9970e, type: 2}
     - target: {fileID: 919132149155446097, guid: 9784c601b9db1ef4383272ca59f29a7d, type: 3}
       propertyPath: m_Name
       value: Carcaj_Model (1)
@@ -3903,6 +3903,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8404221044701897150, guid: 43179fdc744a4e040a396761ae3732d7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43179fdc744a4e040a396761ae3732d7, type: 3}
 --- !u!1 &4540776165853378597 stripped
@@ -3986,6 +3990,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8404221044701897150, guid: 43179fdc744a4e040a396761ae3732d7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43179fdc744a4e040a396761ae3732d7, type: 3}
 --- !u!4 &6858694888283629079 stripped
@@ -4059,7 +4067,7 @@ PrefabInstance:
     - target: {fileID: -8394893481037000102, guid: 9784c601b9db1ef4383272ca59f29a7d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9784c601b9db1ef4383272ca59f29a7d, type: 3}
       propertyPath: m_Name
       value: Carcaj_Model
@@ -4164,7 +4172,7 @@ PrefabInstance:
     - target: {fileID: 3135237968945660833, guid: 30f338f5f79c84941b44e64a97a0a5c6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ca09f540d7da14a42be28cf1ebc6c3a7, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 4213953920460507327, guid: 30f338f5f79c84941b44e64a97a0a5c6, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -4262,7 +4270,7 @@ PrefabInstance:
     - target: {fileID: -7698105801758156280, guid: 58a5fc40f090779458dd2ec044815ae4, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ad3e2ff1cde2d2c44ad0956065732a55, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: -7657966619581158213, guid: 58a5fc40f090779458dd2ec044815ae4, type: 3}
       propertyPath: m_Layer
       value: 3
