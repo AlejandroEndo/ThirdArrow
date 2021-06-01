@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.unity.ai.navigation.components": {
+      "version": "https://github.com/Unity-Technologies/NavMeshComponents.git#package",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.ai": "1.0.0"
+      },
+      "hash": "0fc6f532e4f47d66d173314efcb906bc7cf0d00f"
+    },
     "com.unity.animation.rigging": {
       "version": "1.0.3",
       "depth": 0,
@@ -20,7 +29,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.cinemachine": {
-      "version": "2.6.4",
+      "version": "2.6.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -50,7 +59,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.7",
+      "version": "2.0.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {
