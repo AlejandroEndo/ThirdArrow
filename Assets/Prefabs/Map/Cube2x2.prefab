@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7175701392237845970}
   - component: {fileID: 430394160025301241}
   - component: {fileID: 1031748794569152385}
+  - component: {fileID: 3001892736408080379}
   m_Layer: 0
   m_Name: Cube2x2
   m_TagString: Untagged
@@ -884,3 +885,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 1, y: 1, z: -1}
+--- !u!208 &3001892736408080379
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923626530259308973}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1, y: 1, z: 1}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 1, y: 1, z: -1}
+  m_TimeToStationary: 0.5
