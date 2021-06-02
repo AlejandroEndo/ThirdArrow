@@ -12,12 +12,19 @@ public class PlayerMovementController : MonoBehaviour {
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private bool onSprint;
     [SerializeField] private float speed;
-    [SerializeField] private float playerSpeed;
+    [SerializeField] private float basePlayerSpeed;
+    [SerializeField] private float staminaRecoverSpeed;
     public bool isAiming;
     public float sprintSpeed;
 
-    [SerializeField] private float totalStamina;
-    [SerializeField] private float currentStamina = 0f;
+    public float PlayerSpeed {
+        get {
+            return isTired ? basePlayerSpeed * 0.75f : basePlayerSpeed;
+        }
+    }
+
+    public float totalStamina;
+    public float currentStamina = 0f;
     [SerializeField] private float temple;
     public bool isTired = false;
 
@@ -26,7 +33,7 @@ public class PlayerMovementController : MonoBehaviour {
 
     private float StaminaRecover {
         get {
-            return movementInput.magnitude < 0.1f ? 1 : 0.5f;
+            return movementInput.magnitude < 0.1f ? staminaRecoverSpeed : staminaRecoverSpeed * 0.5f;
         }
     }
 
@@ -86,7 +93,7 @@ public class PlayerMovementController : MonoBehaviour {
             playerMove *= sprintSpeed;
             currentStamina -= temple * Time.deltaTime;
         } else {
-            playerMove *= playerSpeed;
+            playerMove *= PlayerSpeed;
         }
         //playerMove *= onSprint ? sprintSpeed : playerSpeed;
         Vector3 newPos = transform.position + playerMove.normalized;
