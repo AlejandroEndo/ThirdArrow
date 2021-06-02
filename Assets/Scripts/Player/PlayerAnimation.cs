@@ -37,5 +37,5 @@ public class PlayerAnimation : MonoBehaviour {
         }
     }
 
-    
+
 }
