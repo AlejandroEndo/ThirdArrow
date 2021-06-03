@@ -8,6 +8,11 @@ namespace Assets.Scripts.FSM {
 
         NavMeshAgent navMeshAgent;
         FiniteStateMachine finiteStateMachine;
+
+        [SerializeField] private Transform[] patrolPoints;
+
+        public Transform[] PatrolPoints { get { return patrolPoints; } }
+
         private void Awake() {
             navMeshAgent = GetComponent<NavMeshAgent>();
             finiteStateMachine = GetComponent<FiniteStateMachine>();
@@ -18,7 +23,6 @@ namespace Assets.Scripts.FSM {
         }
 
         private void Update() {
-
         }
     }
 }

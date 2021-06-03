@@ -1,32 +1,56 @@
 ﻿using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Assets.Scripts.FSM {
     public class FiniteStateMachine : MonoBehaviour {
 
-        [SerializeField] private AbstractFSMState startingState;
-        private AbstractFSMState currentState;
+        [SerializeField] private AbstractFSMState currentState;
+
+        [SerializeField] private List<AbstractFSMState> validStates;
+        private Dictionary<FSMStateType, AbstractFSMState> fsmStates;
 
         private void Awake() {
             currentState = null;
+            fsmStates = new Dictionary<FSMStateType, AbstractFSMState>();
+
+            NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
+            NPC npc = GetComponent<NPC>();
+
+            foreach (AbstractFSMState state in validStates) {
+                state.SetExecutingFSM(this);
+                state.SetExecutingNPC(npc);
+                state.SetNavMeshAgent(navMeshAgent);
+                fsmStates.Add(state.StateType, state);
+            }
         }
 
         private void Start() {
-            if (startingState != null)
-                EnterState(startingState);
+            EnterState(FSMStateType.IDLE);
+
         }
 
         private void Update() {
-            if(currentState != null) {
+            if (currentState != null) {
                 currentState.UpdateState();
             }
         }
 
-        private void EnterState(AbstractFSMState nextState) {
+        public void EnterState(AbstractFSMState nextState) {
             if (nextState == null) return;
+
+            if (currentState != null) currentState.ExitState();
 
             currentState = nextState;
             currentState.EnterState();
+        }
+
+        public void EnterState(FSMStateType stateType) {
+            if (fsmStates.ContainsKey(stateType)) {
+                AbstractFSMState nextState = fsmStates[stateType];
+                EnterState(nextState);
+            }
         }
     }
 }
