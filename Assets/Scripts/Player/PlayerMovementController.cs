@@ -6,36 +6,51 @@ using UnityEngine.AI;
 
 public class PlayerMovementController : MonoBehaviour {
 
-    [SerializeField] private InputActionReference movementController;
-    [SerializeField] private InputActionReference sprintController;
-    [SerializeField] private InputActionReference aimController;
+    [Header("Config")]
     [SerializeField] private NavMeshAgent navMeshAgent;
-    [SerializeField] private bool onSprint;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private float staminaRecoverSpeed;
+
+    [Header("Movement")]
+    [SerializeField] private InputActionReference movementController;
     [SerializeField] private float speed;
     [SerializeField] private float basePlayerSpeed;
-    [SerializeField] private float staminaRecoverSpeed;
-    public bool isAiming;
-    public float sprintSpeed;
-
-    public float PlayerSpeed {
-        get {
-            return isTired ? basePlayerSpeed * 0.75f : basePlayerSpeed;
-        }
-    }
-
-    public float totalStamina;
-    public float currentStamina = 0f;
-    [SerializeField] private float temple;
     public bool isTired = false;
-
     public Vector3 playerMove;
     public Vector2 movementInput;
 
-    private float StaminaRecover {
+    [Header("Sprint")]
+    [SerializeField] private InputActionReference sprintController;
+    [SerializeField] private bool onSprint;
+    public float sprintSpeed;
+    public float totalStamina;
+    public float currentStamina = 0f;
+    [SerializeField] private float temple;
+
+    public float PlayerSpeed { get { return isTired ? basePlayerSpeed * 0.75f : basePlayerSpeed; } }
+    private float StaminaRecover { get { return movementInput.magnitude < 0.1f ? staminaRecoverSpeed : staminaRecoverSpeed * 0.5f; } }
+
+    [Header("Shooting")]
+    [SerializeField] private InputActionReference aimController;
+    [SerializeField] private InputActionReference shootController;
+    public bool isAiming;
+    public bool isShootPressed;
+    public Vector2 lookAt;
+    [Range(0.1f, 1f)]
+    [SerializeField] private float totalFireRate;
+    public float fireRate;
+
+    public bool TriggerShoot {
         get {
-            return movementInput.magnitude < 0.1f ? staminaRecoverSpeed : staminaRecoverSpeed * 0.5f;
+            if (isShootPressed) {
+                isShootPressed = false;
+                fireRate = totalFireRate;
+                return true;
+            }
+            return isShootPressed;
         }
     }
+
 
     void Awake() {
         sprintController.action.performed += ctx => {
@@ -50,9 +65,19 @@ public class PlayerMovementController : MonoBehaviour {
         aimController.action.canceled += ctx => {
             isAiming = false;
         };
+        shootController.action.started += ctx => {
+            isShootPressed = fireRate <= 0 && isAiming;
+        };
+        shootController.action.canceled += ctx => {
+            isShootPressed = false;
+        };
     }
 
     private void Update() {
+        if (fireRate > 0f) fireRate -= Time.deltaTime;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
         movementInput = isAiming ? Vector2.zero : movementController.action.ReadValue<Vector2>();
         if (isTired && currentStamina >= totalStamina) {
             isTired = false;
@@ -62,7 +87,7 @@ public class PlayerMovementController : MonoBehaviour {
             isTired = true;
         }
 
-        if (!onSprint && currentStamina < totalStamina) {
+        if ((!onSprint || movementInput.magnitude < 0.1f) && currentStamina < totalStamina) {
             currentStamina += StaminaRecover * Time.deltaTime;
         }
     }
@@ -77,7 +102,7 @@ public class PlayerMovementController : MonoBehaviour {
 
             if (Physics.Raycast(ray, out hit, LayerMask.GetMask("Aim"))) {
                 Transform objectHit = hit.transform;
-                Vector2 lookAt = new Vector2(hit.point.x - transform.position.x, hit.point.z - transform.position.z);
+                lookAt = new Vector2(hit.point.x - transform.position.x, hit.point.z - transform.position.z);
                 PlayerRotation(lookAt);
             }
         } else if (movementInput != Vector2.zero)
@@ -89,7 +114,7 @@ public class PlayerMovementController : MonoBehaviour {
         playerMove = new Vector3(movement.x, 0f, movement.y).normalized;
         playerMove = Camera.main.transform.forward.normalized * 2 * playerMove.z + Camera.main.transform.right.normalized * playerMove.x;
         playerMove.y = 0f;
-        if (onSprint && !isTired) {
+        if (onSprint && !isTired && movement.magnitude > 0.1f) {
             playerMove *= sprintSpeed;
             currentStamina -= temple * Time.deltaTime;
         } else {
@@ -97,14 +122,14 @@ public class PlayerMovementController : MonoBehaviour {
         }
         //playerMove *= onSprint ? sprintSpeed : playerSpeed;
         Vector3 newPos = transform.position + playerMove.normalized;
-        Vector3 hMove = playerMove.x * Vector3.right;
-        Vector3 vMove = playerMove.z * Vector3.forward;
         if (NavMesh.SamplePosition(newPos, out hit, 0.3f, NavMesh.AllAreas)) {
             if ((transform.position - hit.position).magnitude >= 0.02f) {
                 navMeshAgent.Move(playerMove * Time.fixedDeltaTime);
             }
         } else {
             Vector3 bipasedMove = new Vector3();
+            Vector3 hMove = playerMove.x * Vector3.right;
+            Vector3 vMove = playerMove.z * Vector3.forward;
 
             if (NavMesh.SamplePosition(hMove, out hit, 0.3f, NavMesh.AllAreas)) {
                 if ((transform.position - hit.position).magnitude >= 0.02f) {
@@ -130,9 +155,9 @@ public class PlayerMovementController : MonoBehaviour {
         movementController.action.Enable();
         sprintController.action.Enable();
         aimController.action.Enable();
+        shootController.action.Enable();
         /*
         jumpController.action.Enable();
-        shootController.action.Enable();
         */
     }
 
@@ -140,9 +165,9 @@ public class PlayerMovementController : MonoBehaviour {
         movementController.action.Disable();
         sprintController.action.Disable();
         aimController.action.Disable();
+        shootController.action.Disable();
         /*
         jumpController.action.Disable();
-        shootController.action.Disable();
         */
     }
 }

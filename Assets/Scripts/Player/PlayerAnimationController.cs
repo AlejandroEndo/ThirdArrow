@@ -16,8 +16,8 @@ public class PlayerAnimationController : MonoBehaviour {
     }
 
     void Update() {
-        float a = Mathf.Abs(playerMovementController.playerMove.magnitude) / playerMovementController.sprintSpeed;
-        anim.SetFloat("zVel_f", a);
+        float normalizedSpeed = Mathf.Abs(playerMovementController.playerMove.magnitude) / playerMovementController.sprintSpeed;
+        anim.SetFloat("zVel_f", normalizedSpeed);
         Aiming();
     }
 
@@ -29,10 +29,9 @@ public class PlayerAnimationController : MonoBehaviour {
         } else {
             aimWeight = aimWeight <= 0 ? 0 : aimWeight - Time.deltaTime * aimAnimationSpeed;
         }
-        /*
-        anim.SetBool("holdingArrow_b", playerShooting.currentShootCharge > 0);
-        anim.SetFloat("shootCharge_f", playerShooting.currentShootCharge / playerShooting.chargeShootLimit);
+    }
 
-        }*/
+    public void Fire() {
+        anim.SetTrigger("shoot_t");
     }
 }

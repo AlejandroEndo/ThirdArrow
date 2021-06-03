@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MapGenerator : MonoBehaviour {
     public Vector2 aspectRatio;
@@ -24,6 +25,7 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField] private int roomTresholdSize;
     [Range(1, 5)]
     [SerializeField] private int passageRadius;
+    [SerializeField] private NavMeshSurface mapNavMesh;
 
     private int[,] map;
 
@@ -32,7 +34,7 @@ public class MapGenerator : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetMouseButtonDown(0)) GenerateMap();
+        //if (Input.GetMouseButtonDown(0)) GenerateMap();
     }
 
     private void GenerateMap() {
@@ -58,6 +60,8 @@ public class MapGenerator : MonoBehaviour {
 
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
         meshGenerator.GenerateMesh(borderedMap, unitSize);
+        transform.Rotate(Vector3.up * 45f);
+        mapNavMesh.BuildNavMesh();
     }
 
     void ProcessMap() {

@@ -13,28 +13,21 @@ public class BowFx : MonoBehaviour {
     [SerializeField] private GameObject displayArrow;
     [SerializeField] private CinemachineImpulseSource impulseSource;
     private bool holdingArrow;
-    private PlayerController playerController;
-    private PlayerShooting playerShooting;
+    private PlayerMovementController playerController;
+    private PlayerShootController playerShooting;
 
 
 
     void Start() {
-        playerController = GetComponent<PlayerController>();
-        playerShooting = GetComponent<PlayerShooting>();
+        playerController = GetComponent<PlayerMovementController>();
+        playerShooting = GetComponent<PlayerShootController>();
         if (lineRenderer == null)
             lineRenderer = GetComponent<LineRenderer>();
 
     }
 
     void Update() {
-        if (playerController.isShootPressed && playerShooting.nextShoot >= playerShooting.coolDown) {
-            holdingArrow = true;
-        } else {
-            if (holdingArrow && playerShooting.nextShoot >= playerShooting.coolDown)
-                impulseSource.GenerateImpulse();
-            holdingArrow = false;
-        }
-        displayArrow.SetActive(holdingArrow);
+        displayArrow.SetActive(playerController.isAiming && playerController.fireRate <= 0f);
         lineRenderer.SetPosition(0, topJoint.position);
         lineRenderer.SetPosition(1, playerController.isAiming ? rightHand.position : middleCord.position);
         lineRenderer.SetPosition(2, bottomJoint.position);
