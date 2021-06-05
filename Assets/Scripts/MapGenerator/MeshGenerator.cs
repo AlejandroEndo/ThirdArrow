@@ -5,15 +5,18 @@ using UnityEngine;
 public class MeshGenerator : MonoBehaviour {
 
     public SquareGrid squareGrid;
-    public MeshFilter walls;
+    //public MeshFilter walls;
+    public Transform wallsParent;
     public MeshFilter floorMesh;
 
-    List<Vector3> vertices;
-    List<int> triangles;
+    private List<Vector3> vertices;
+    private List<int> triangles;
+    [SerializeField] private List<GameObject> wallPrefabTiles;
 
-    Dictionary<int, List<Triangle>> triangleDictionary = new Dictionary<int, List<Triangle>>();
-    List<List<int>> outlines = new List<List<int>>();
-    HashSet<int> checkedVertices = new HashSet<int>();
+    private Dictionary<int, List<Triangle>> triangleDictionary = new Dictionary<int, List<Triangle>>();
+    private Dictionary<int, GameObject> wallTiles = new Dictionary<int, GameObject>();
+    private List<List<int>> outlines = new List<List<int>>();
+    private HashSet<int> checkedVertices = new HashSet<int>();
 
     public void GenerateMesh(int[,] map, float squareSize) {
         triangleDictionary.Clear();
@@ -28,12 +31,12 @@ public class MeshGenerator : MonoBehaviour {
         for (int x = 0; x < squareGrid.squares.GetLength(0); x++) {
             for (int y = 0; y < squareGrid.squares.GetLength(1); y++) {
                 TriangulateSquare(squareGrid.squares[x, y]);
+                //WallGenerator(squareGrid.squares[x, y]);
             }
         }
 
         Mesh mesh = new Mesh();
         floorMesh.mesh = mesh;
-
 
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
@@ -41,8 +44,8 @@ public class MeshGenerator : MonoBehaviour {
 
         Vector2[] uv = new Vector2[vertices.Count];
 
-        for(int i = 0; i < vertices.Count; i++) {
-            float percentX = Mathf.InverseLerp(-map.GetLength(0)/2 * squareSize, map.GetLength(0)/2 * squareSize, vertices[i].x);
+        for (int i = 0; i < vertices.Count; i++) {
+            float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x);
             float percenty = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].z);
 
             uv[i] = new Vector2(percentX, percenty);
@@ -52,9 +55,10 @@ public class MeshGenerator : MonoBehaviour {
         MeshCollider floorCollider = floorMesh.gameObject.AddComponent<MeshCollider>();
         floorCollider.sharedMesh = mesh;
 
-        CreateWallMesh();
+        //CreateWallMesh();
     }
 
+    /*
     void CreateWallMesh() {
         CalculateMeshOutlines();
 
@@ -66,6 +70,7 @@ public class MeshGenerator : MonoBehaviour {
         foreach (List<int> outline in outlines) {
             for (int i = 0; i < outline.Count - 1; i++) {
                 int startIndex = wallVertices.Count;
+
                 wallVertices.Add(vertices[outline[i]]); // left
                 wallVertices.Add(vertices[outline[i + 1]]); // right
                 wallVertices.Add(vertices[outline[i]] - Vector3.up * wallHeight); // bottom left
@@ -80,18 +85,27 @@ public class MeshGenerator : MonoBehaviour {
                 wallTriangles.Add(startIndex + 0);
             }
         }
+
         wallMesh.vertices = wallVertices.ToArray();
-        //wallTriangles.Reverse();
+        wallTriangles.Reverse();
         wallMesh.triangles = wallTriangles.ToArray();
         walls.mesh = wallMesh;
         wallMesh.RecalculateNormals();
     }
+    */
+
+    void WallGenerator(int index, Vector3 pos) {
+        GameObject spawn = Instantiate(wallPrefabTiles[index - 1], pos, Quaternion.identity);
+        spawn.transform.parent = wallsParent;
+
+    }
 
     void TriangulateSquare(Square square) {
+        if (square.configuration > 0)
+            WallGenerator(square.configuration, (square.topRight.position + square.bottomLeft.position) / 2);
         switch (square.configuration) {
             case 0:
                 break;
-
             // 1 points:
             case 1:
                 MeshFromPoints(square.centerLeft, square.centerBottom, square.bottomLeft);
@@ -120,9 +134,11 @@ public class MeshGenerator : MonoBehaviour {
                 MeshFromPoints(square.topLeft, square.topRight, square.centerRight, square.centerLeft);
                 break;
             case 5:
+                Debug.Log(square.bottomLeft.position);
                 MeshFromPoints(square.centerTop, square.topRight, square.centerRight, square.centerBottom, square.bottomLeft, square.centerLeft);
                 break;
             case 10:
+                Debug.Log(square.bottomLeft.position);
                 MeshFromPoints(square.topLeft, square.centerTop, square.centerRight, square.bottomRight, square.centerBottom, square.centerLeft);
                 break;
 

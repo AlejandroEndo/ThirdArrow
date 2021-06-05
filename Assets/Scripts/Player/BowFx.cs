@@ -29,7 +29,7 @@ public class BowFx : MonoBehaviour {
     void Update() {
         displayArrow.SetActive(playerController.isAiming && playerController.fireRate <= 0f);
         lineRenderer.SetPosition(0, topJoint.position);
-        lineRenderer.SetPosition(1, playerController.isAiming ? rightHand.position : middleCord.position);
+        lineRenderer.SetPosition(1, playerController.isAiming && playerController.fireRate <= 0f ? rightHand.position : middleCord.position);
         lineRenderer.SetPosition(2, bottomJoint.position);
     }
 }

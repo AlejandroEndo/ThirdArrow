@@ -11,12 +11,12 @@ public enum ExecutionState {
     TERMINATED,
 };
 
-public enum FSMStateType {
-    IDLE,
-    PATROL,
-};
+//public enum FSMStateType {
+//    IDLE,
+//    PATROL,
+//};
 
-public abstract class AbstractFSMState : ScriptableObject {
+public abstract class AbstractFSMState {
 
     protected NavMeshAgent navMeshAgent;
     protected NPC npc;
@@ -27,7 +27,6 @@ public abstract class AbstractFSMState : ScriptableObject {
 
     public virtual void OnEnable() {
         ExecutionState = ExecutionState.ACTIVE;
-        //return true;
     }
 
     public virtual bool EnterState() {

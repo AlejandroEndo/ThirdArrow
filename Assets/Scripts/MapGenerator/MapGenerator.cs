@@ -9,8 +9,8 @@ public class MapGenerator : MonoBehaviour {
     [Range(7, 20)]
     public int resolution;
 
-    private int Width { get { return (int)aspectRatio.x * resolution; } }
-    private int Height { get { return (int)aspectRatio.y * resolution; } }
+    public int Width { get { return (int)aspectRatio.x * resolution; } }
+    public int Height { get { return (int)aspectRatio.y * resolution; } }
 
     [SerializeField] private string randomSeed;
     [SerializeField] private bool useRandomSeed;
@@ -19,17 +19,21 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField] private int randomFillPercent;
     [Range(1, 10)]
     [SerializeField] private int smoothIterations;
-    [SerializeField] private int unitSize;
+    public int unitSize;
     [SerializeField] private int borderSize;
     [SerializeField] private int wallTresholdSize;
     [SerializeField] private int roomTresholdSize;
     [Range(1, 5)]
     [SerializeField] private int passageRadius;
     [SerializeField] private NavMeshSurface mapNavMesh;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private Dictionary<string, List<Coord>> crucialPoints = new Dictionary<string, List<Coord>>();
 
     private int[,] map;
 
     void Start() {
+        crucialPoints.Add("doors", new List<Coord>());
+        crucialPoints.Add("patrol", new List<Coord>());
         GenerateMap();
     }
 
@@ -59,8 +63,9 @@ public class MapGenerator : MonoBehaviour {
         }
 
         MeshGenerator meshGenerator = GetComponent<MeshGenerator>();
+        MapFillGenerator mapfillGenerator = GetComponent<MapFillGenerator>();
         meshGenerator.GenerateMesh(borderedMap, unitSize);
-        transform.Rotate(Vector3.up * 45f);
+        mapfillGenerator.SpawnCrucialPoints(crucialPoints, borderedMap);
         mapNavMesh.BuildNavMesh();
     }
 
@@ -84,7 +89,9 @@ public class MapGenerator : MonoBehaviour {
                     map[tile.x, tile.y] = 1;
                 }
             } else {
-                survivingRooms.Add(new Room(roomRegion, map));
+                Room surviviorRoom = new Room(roomRegion, map);
+                survivingRooms.Add(surviviorRoom);
+                //RandomPointsMap(surviviorRoom);
             }
         }
         survivingRooms.Sort();
@@ -139,23 +146,35 @@ public class MapGenerator : MonoBehaviour {
                             bestRoomB = roomB;
                             bestTileA = tileA;
                             bestTileB = tileB;
+
                         }
                     }
                 }
             }
             if (possibleConnectionFound && !forceAccessibilityFromMainRoom) {
                 CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
+                AddToCrucialPoints("doors", bestTileA);
+                AddToCrucialPoints("doors", bestTileB);
             }
         }
 
         if (possibleConnectionFound && forceAccessibilityFromMainRoom) {
             CreatePassage(bestRoomA, bestRoomB, bestTileA, bestTileB);
+            AddToCrucialPoints("doors", bestTileA);
+            AddToCrucialPoints("doors", bestTileB);
             ConnectClosestRooms(rooms, true);
         }
 
         if (!forceAccessibilityFromMainRoom) {
             ConnectClosestRooms(rooms, true);
         }
+    }
+
+    //private void RandomPointsMap(Room room) {    }
+
+    private void AddToCrucialPoints(string key, Coord tile) {
+        //Vector3 pos = CoordToWorldPoint(tile);
+        crucialPoints[key].Add(tile);
     }
 
     List<Coord> GetLine(Coord from, Coord to) {
@@ -211,7 +230,7 @@ public class MapGenerator : MonoBehaviour {
         Room.ConnectRooms(roomA, roomB);
 
         List<Coord> line = GetLine(tileA, tileB);
-        foreach(Coord coord in line) {
+        foreach (Coord coord in line) {
             DrawCircle(coord, passageRadius);
         }
     }
@@ -228,7 +247,7 @@ public class MapGenerator : MonoBehaviour {
         }
     }
 
-    Vector3 CoordToWorldPoint(Coord tile) {
+    public Vector3 CoordToWorldPoint(Coord tile) {
         return new Vector3(-Width / 2 + unitSize / 2 + tile.x, 2f, -Height / 2 + unitSize / 2 + tile.y);
     }
 
@@ -282,8 +301,7 @@ public class MapGenerator : MonoBehaviour {
     }
 
     private void RandomFillMap() {
-        if (useRandomSeed) randomSeed = Time.time.ToString();
-
+        if (useRandomSeed) randomSeed = Time.realtimeSinceStartup.ToString();
         System.Random rng = new System.Random(randomSeed.GetHashCode());
 
         for (int x = 0; x < Width; x++) {
@@ -318,7 +336,7 @@ public class MapGenerator : MonoBehaviour {
         return wallCount;
     }
 
-    struct Coord {
+    public struct Coord {
         public int x;
         public int y;
         public Coord(int _x, int _y) {
@@ -327,7 +345,7 @@ public class MapGenerator : MonoBehaviour {
         }
     }
 
-    class Room : IComparable<Room> {
+    public class Room : IComparable<Room> {
         public List<Coord> tiles;
         public List<Coord> edgeTiles;
         public List<Room> connectedRooms;

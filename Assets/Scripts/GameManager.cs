@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
 
     public List<Pool> pools;
 
+    public List<GameObject> enemiesToSpawn;
+
     public Dictionary<string, Queue<GameObject>> poolDictionary;
 
     private void Awake() {

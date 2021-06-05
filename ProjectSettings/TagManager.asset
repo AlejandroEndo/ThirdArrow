@@ -8,6 +8,7 @@ TagManager:
   - CineMachine
   - CrossHair
   - Shootable
+  - MapManager
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Arrow
   - Aim
   - Enemy
-  - 
+  - Map
   - 
   - 
   - 
