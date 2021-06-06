@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 150049480848945701}
   - component: {fileID: 5410314822842299727}
   - component: {fileID: 4043571204997382442}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 25243633556151980}
   - component: {fileID: 6419592119495272935}
   - component: {fileID: 6200777131753577280}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PatrolPoint (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 6288032947538927147}
   - component: {fileID: 4578402831586478022}
   - component: {fileID: 4480661135657007430}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PatrolPoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - component: {fileID: 2125731142692376365}
   - component: {fileID: 6628002871170759984}
   - component: {fileID: 2044496035803576651}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PatrolPoint (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +340,7 @@ GameObject:
   - component: {fileID: 5859781683236119529}
   - component: {fileID: 5859781683236119531}
   - component: {fileID: 5859781683236119528}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Shootable
   m_Icon: {fileID: 0}
@@ -524,7 +524,7 @@ GameObject:
   - component: {fileID: 9073114111033906208}
   - component: {fileID: 8885614583197974528}
   - component: {fileID: 14649593727265560}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PatrolPoint (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -605,7 +605,7 @@ GameObject:
   - component: {fileID: 2194813453807476354}
   - component: {fileID: 317880006065793012}
   - component: {fileID: 6367568405896623485}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 7579951317265474167}
   - component: {fileID: 8242949993484840534}
   - component: {fileID: 7388830313230597457}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PatrolPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

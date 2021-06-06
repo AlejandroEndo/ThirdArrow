@@ -15,7 +15,7 @@ public class PlayerShootController : MonoBehaviour {
         if (movementController.TriggerShoot) {
             Vector2 lookAt = movementController.lookAt;
             GameObject arrow = objectPooler.SpawnFromPool("Arrow", firePoint.position, Quaternion.LookRotation(new Vector3(lookAt.x, 0f, lookAt.y)));
-            arrow.GetComponent<ArrowProjectile>().Fire();
+            //arrow.GetComponent<ArrowProjectile>().Fire();
             animationController.Fire();
         }
     }
