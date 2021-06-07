@@ -1,4 +1,3 @@
-using Assets.Scripts.FSM;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +19,7 @@ public abstract class AbstractFSMState {
 
     protected NavMeshAgent navMeshAgent;
     protected NPC npc;
-    protected FiniteStateMachine fsm;
+    protected NPCStats fsm;
     public ExecutionState ExecutionState { get; protected set; }
     public FSMStateType StateType { get; protected set; }
     public bool EnteredState { get; protected set; }
@@ -50,7 +49,7 @@ public abstract class AbstractFSMState {
         }
     }
 
-    public virtual void SetExecutingFSM(FiniteStateMachine _fsm) {
+    public virtual void SetExecutingFSM(NPCStats _fsm) {
         if (_fsm != null) {
             fsm = _fsm;
         }

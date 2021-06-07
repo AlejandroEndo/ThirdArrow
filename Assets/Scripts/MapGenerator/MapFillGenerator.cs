@@ -28,6 +28,7 @@ public class MapFillGenerator : MonoBehaviour {
     private void SpawnPoint(Vector3 pos) {
         GameObject enemy = Instantiate(capsuleEnemy, pos, Quaternion.identity);
         enemy.transform.parent = enemiesParent.transform;
+        enemy.GetComponent<NPC>().spawnPoint = pos;
     }
 
     private MapGenerator.Coord GetAvailableSpot(MapGenerator.Coord spawnCoord, int[,] map) {
