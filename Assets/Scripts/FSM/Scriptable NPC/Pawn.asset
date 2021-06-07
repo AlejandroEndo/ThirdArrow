@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   detectionRange: 8
-  patrolRange: 0
-  idleDuration: 0
+  patrolRange: 5
+  idleDuration: 5
   patrolSpeed: 1
   chaseSpeed: 3
   ChaseRange: 10
-  attackRange: 3
+  attackRange: 8
   waitBeforeAttack: 0.5
   waitAfterAttack: 1
   damage: 1
-  scapeDistance: 2
+  scapeDistance: 3
   criticalMultiplier: 1
   criticalChance: 0
