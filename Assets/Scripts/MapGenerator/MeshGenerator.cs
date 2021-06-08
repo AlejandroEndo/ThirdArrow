@@ -134,11 +134,9 @@ public class MeshGenerator : MonoBehaviour {
                 MeshFromPoints(square.topLeft, square.topRight, square.centerRight, square.centerLeft);
                 break;
             case 5:
-                Debug.Log(square.bottomLeft.position);
                 MeshFromPoints(square.centerTop, square.topRight, square.centerRight, square.centerBottom, square.bottomLeft, square.centerLeft);
                 break;
             case 10:
-                Debug.Log(square.bottomLeft.position);
                 MeshFromPoints(square.topLeft, square.centerTop, square.centerRight, square.bottomRight, square.centerBottom, square.centerLeft);
                 break;
 

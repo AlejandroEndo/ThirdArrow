@@ -11,7 +11,7 @@ public class ArrowProjectile : MonoBehaviour {
     protected Rigidbody rb;
     private void Awake() {
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass = transform.position;
+        // rb.centerOfMass = transform.position;
     }
 
     private void Start() {
@@ -21,8 +21,9 @@ public class ArrowProjectile : MonoBehaviour {
     void Update() {
     }
 
-    public virtual void Fire(Vector3 dir) {
-        rb.AddForce(dir * force, ForceMode.Impulse);
+    public virtual void Fire() {
+        rb.AddForce(transform.forward * force, ForceMode.Impulse);
+        transform.rotation = Quaternion.Euler(new Vector3(0f, transform.rotation.eulerAngles.y, 0f));
         // TODO: Cinemachine Impulse source
     }
 

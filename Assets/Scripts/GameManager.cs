@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
 
     public Dictionary<string, Queue<GameObject>> poolDictionary;
 
+    [SerializeField] private Transform carcaj;
+
     private void Awake() {
         if (_instance != null && _instance != this) {
             Destroy(this.gameObject);
@@ -31,6 +33,7 @@ public class GameManager : MonoBehaviour {
             for (int i = 0; i < pool.size; i++) {
                 GameObject obj = Instantiate(pool.prefab);
                 obj.SetActive(false);
+                obj.transform.parent = carcaj;
                 objectPool.Enqueue(obj);
             }
 

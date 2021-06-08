@@ -65,12 +65,14 @@ public abstract class NPC : MonoBehaviour {
         state = newState;
         switch (newState) {
             case FSMStateType.IDLE:
-                target = Vector3.zero;
+                //target = Vector3.zero;
                 StartCoroutine(NewPatrolPoint());
+                agent.isStopped = true;
                 break;
             case FSMStateType.PATROL:
-                target = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f)).normalized * stats.patrolRange;
+                target = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f)) * stats.patrolRange;
                 spawnObject.transform.localPosition = target;
+                agent.isStopped = false;
                 StartCoroutine(NewPatrolPoint());
                 break;
             case FSMStateType.CHASE:
@@ -86,8 +88,8 @@ public abstract class NPC : MonoBehaviour {
     }
 
     public virtual void FixedUpdate() {
-        if (target != null) {
-            agent.SetDestination(transform.position + target);
+        if (!agent.isStopped) {
+            agent.SetDestination(spawnPoint + target);
         }
         // SetFSMState();
         /*

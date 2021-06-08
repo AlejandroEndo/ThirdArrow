@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +10,7 @@ public class PlayerMovementController : MonoBehaviour {
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float staminaRecoverSpeed;
+    public GameObject aimingTo;
 
     [Header("Movement")]
     [SerializeField] private InputActionReference movementController;
@@ -35,7 +36,7 @@ public class PlayerMovementController : MonoBehaviour {
     [SerializeField] private InputActionReference shootController;
     public bool isAiming;
     public bool isShootPressed;
-    public Vector2 lookAt;
+    public Vector3 lookAt;
     [Range(0.1f, 1f)]
     [SerializeField] private float totalFireRate;
     public float fireRate;
@@ -90,6 +91,20 @@ public class PlayerMovementController : MonoBehaviour {
         if ((!onSprint || movementInput.magnitude < 0.1f) && currentStamina < totalStamina) {
             currentStamina += StaminaRecover * Time.deltaTime;
         }
+        if (isAiming) {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Aim"))) {
+                //Transform objectHit = hit.transform;
+                //Vector3 newPoint = Vec
+                //lookAt = new Vector2(hit.point.x, hit.point.z).normalized;
+                //hit.point.y = 1.3f;
+                //lookAt = hit.point;
+                aimingTo.transform.position = hit.point;
+                //transform.r();
+                PlayerRotation(new Vector2(aimingTo.transform.position.x - transform.position.x, aimingTo.transform.position.z - transform.position.z).normalized);
+            }
+        } else if (movementInput != Vector2.zero)
+            PlayerRotation(movementInput);
     }
 
     void FixedUpdate() {
@@ -97,20 +112,29 @@ public class PlayerMovementController : MonoBehaviour {
 
 
         if (isAiming) {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, LayerMask.GetMask("Aim"))) {
-                Transform objectHit = hit.transform;
-                lookAt = new Vector2(hit.point.x - transform.position.x, hit.point.z - transform.position.z);
+            //Vector3 mousePos = Input.mousePosition;
+            //mousePos.z = 25f;
+            //Vector3 point = Camera.main.ScreenToWorldPoint(mousePos);
+            //point.y = 1.3f;
+            //lookAt = point;//new Vector3(point.x, 0f, point.z) + transform.position;
+            //aimingTo.transform.position = lookAt;
+            //PlayerRotation(lookAt);
+            //☺Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            /*
+            if (Physics.Raycast(ray, out RaycastHit hit, LayerMask.GetMask("Aim"))) {
+                //Transform objectHit = hit.transform;
+                //Vector3 newPoint = Vec
+                lookAt = new Vector2(hit.point.x, hit.point.z).normalized;
+                //hit.point.y = 1.3f;
+                aimingTo.transform.position = hit.point;
                 PlayerRotation(lookAt);
             }
+             */
         } else if (movementInput != Vector2.zero)
             PlayerRotation(movementInput);
     }
 
     private void Locomotion(Vector3 movement) {
-        NavMeshHit hit;
         playerMove = new Vector3(movement.x, 0f, movement.y).normalized;
         playerMove = Camera.main.transform.forward.normalized * 2 * playerMove.z + Camera.main.transform.right.normalized * playerMove.x;
         playerMove.y = 0f;
@@ -122,7 +146,7 @@ public class PlayerMovementController : MonoBehaviour {
         }
         //playerMove *= onSprint ? sprintSpeed : playerSpeed;
         Vector3 newPos = transform.position + playerMove.normalized;
-        if (NavMesh.SamplePosition(newPos, out hit, 0.3f, NavMesh.AllAreas)) {
+        if (NavMesh.SamplePosition(newPos, out NavMeshHit hit, 0.3f, NavMesh.AllAreas)) {
             if ((transform.position - hit.position).magnitude >= 0.02f) {
                 navMeshAgent.Move(playerMove * Time.fixedDeltaTime);
             }

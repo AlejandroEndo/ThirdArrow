@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   detectionRange: 8
-  patrolRange: 5
+  patrolRange: 2.5
   idleDuration: 5
   patrolSpeed: 1
   chaseSpeed: 3
