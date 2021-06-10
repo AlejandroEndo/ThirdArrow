@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private Transform carcaj;
 
+    public GameObject DamageText;
+    public List<Color> damageTextColors;
+    public Dictionary<DamageType, Color> colors;
+
     private void Awake() {
         if (_instance != null && _instance != this) {
             Destroy(this.gameObject);
@@ -39,6 +43,11 @@ public class GameManager : MonoBehaviour {
 
             poolDictionary.Add(pool.tag, objectPool);
         }
+        colors = new Dictionary<DamageType, Color> {
+            { DamageType.BASIC, damageTextColors[0] },
+            { DamageType.CRITICAL, damageTextColors[1] },
+            { DamageType.HEALTH, damageTextColors[2] },
+        };
     }
 
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation) {

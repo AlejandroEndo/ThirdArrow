@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PawnNPC : NPC {
 
-    
 
     void Start() {
 

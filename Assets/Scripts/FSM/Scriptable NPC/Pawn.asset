@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39e1cb1d85e25c64bb19654596d19911, type: 3}
   m_Name: Pawn
   m_EditorClassIdentifier: 
-  type: 0
   detectionRange: 8
   patrolRange: 2.5
-  idleDuration: 5
+  idleDuration: {x: 5, y: 10}
   patrolSpeed: 1
   chaseSpeed: 3
   ChaseRange: 10
-  attackRange: 8
+  attackRange: 1.5
   waitBeforeAttack: 0.5
   waitAfterAttack: 1
   damage: 1

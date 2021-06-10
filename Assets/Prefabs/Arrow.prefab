@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: -3713958160986036641}
   m_Layer: 0
   m_Name: Arrow
-  m_TagString: Shootable
+  m_TagString: Arrow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -406,5 +406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba605af357f0d75488ba19bdc64b76f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 15.2
-  lifeTime: 10
+  force: 15
+  lifeTime: 5
+  damage: 1
+  head: {fileID: 1199507621}

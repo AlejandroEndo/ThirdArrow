@@ -16,16 +16,22 @@ public enum FSMStateType {
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class NPC : MonoBehaviour {
 
-    public Vector3 spawnPoint;
+    public Transform spawnPoint;
+
+    public NPCStats stats;
+    public FSMStateType state;
+    public GameObject spawnObject;
+
     protected Vector3 target;
 
     protected NavMeshAgent agent;
     protected Rigidbody rb;
     protected SphereCollider detectionCollider;
 
-    public NPCStats stats;
-    public FSMStateType state;
-    public GameObject spawnObject;
+    protected float stateTime = 0f;
+
+    protected Transform playerTransform;
+
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
@@ -38,26 +44,83 @@ public abstract class NPC : MonoBehaviour {
         //agent.stoppingDistance = stats.attackRange;
     }
 
+    private void Start() {
+
+    }
+
+    public virtual void FixedUpdate() {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        StateUpdate();
+    }
+
+    private void Update() {
+    }
+
     public virtual void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
-            //state = FSMStateType.CHASE;
-            //target = other.gameObject.transform.position;
+            playerTransform = other.transform;
+            SetFSMState(FSMStateType.CHASE);
+        }
+    }
+    public virtual void OnCollisionEnter(Collision collision) {
+        if (collision.transform.CompareTag("Arrow")) {
+            Transform arrow = collision.transform;
+            ArrowProjectile arrowScript = arrow.GetComponent<ArrowProjectile>();
+            DamageDisplay.Create(transform.position + Vector3.up * 2f, arrowScript.damage, DamageType.CRITICAL);
+            agent.Move(collision.transform.forward.normalized * 0.1f);
+            //Vector3 result = collision.transform.forward + transform.forward * -1;
+            //rb.AddForce(result.normalized * 50f, ForceMode.Impulse);
+            //rb.AddExplosionForce(50.0f, collision.transform.GetComponent<ArrowProjectile>().head.position, 2f);
         }
     }
 
-    public virtual void OnTriggerStay(Collider other) {
-        if (other.gameObject.CompareTag("Player")) {
-            // agent.SetDestination(target.position);
-            //agent.speed = stats.chaseSpeed;
-        }
-    }
+    public virtual void StateUpdate() {
+        switch (state) {
+            case FSMStateType.IDLE:
+                stateTime -= Time.fixedDeltaTime;
+                if (stateTime <= 0f) {
+                    stateTime = Random.Range(stats.idleDuration.x, stats.idleDuration.y);
+                    SetFSMState(FSMStateType.PATROL);
+                }
+                break;
+            case FSMStateType.PATROL:
+                stateTime -= Time.fixedDeltaTime;
+                if (target != null)
+                    agent.SetDestination(target);
 
-    public virtual void OnTriggerExit(Collider other) {
-        if (other.gameObject.CompareTag("Player")) {
-            //agent.SetDestination(spawnPoint);
-            //agent.speed = stats.patrolSpeed;
-            //state = FSMStateType.RETURN;
-            //target = Vector3.zero;
+                if (stateTime <= 0f) {
+                    stateTime = Random.Range(stats.idleDuration.x, stats.idleDuration.y);
+                    SetFSMState(FSMStateType.IDLE);
+                }
+                break;
+            case FSMStateType.CHASE:
+                if (playerTransform != null)
+                    agent.SetDestination(playerTransform.position);
+
+                if (Vector3.Distance(transform.position, playerTransform.position) > stats.ChaseRange) {
+                    SetFSMState(FSMStateType.RETURN);
+                } else if (Vector3.Distance(transform.position, playerTransform.position) < stats.attackRange + agent.radius) {
+                    SetFSMState(FSMStateType.ATTACK);
+                }
+                break;
+            case FSMStateType.RETURN:
+                playerTransform = null;
+                agent.SetDestination(transform.parent.position);
+
+                if (Vector3.Distance(transform.position, spawnPoint.position) < stats.patrolRange * 0.8f) {
+                    SetFSMState(FSMStateType.IDLE);
+                }
+                break;
+            case FSMStateType.ATTACK:
+                stateTime -= Time.fixedDeltaTime;
+                if (stateTime <= 0f) {
+                    stateTime = stats.waitAfterAttack;
+                    Invoke(nameof(AttackAction), stats.waitBeforeAttack);
+                }
+                break;
+            case FSMStateType.DEATH:
+                break;
         }
     }
 
@@ -65,21 +128,25 @@ public abstract class NPC : MonoBehaviour {
         state = newState;
         switch (newState) {
             case FSMStateType.IDLE:
-                //target = Vector3.zero;
-                StartCoroutine(NewPatrolPoint());
                 agent.isStopped = true;
+                if (agent.speed == stats.chaseSpeed) agent.speed = stats.patrolSpeed;
                 break;
             case FSMStateType.PATROL:
-                target = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f)) * stats.patrolRange;
-                spawnObject.transform.localPosition = target;
+                target = new Vector3(Random.Range(-1f, 1f), 1f, Random.Range(-1f, 1f)) * stats.patrolRange + spawnPoint.position;
                 agent.isStopped = false;
-                StartCoroutine(NewPatrolPoint());
                 break;
             case FSMStateType.CHASE:
+                if (agent.isStopped) agent.isStopped = false;
+                agent.speed = stats.chaseSpeed;
+                //target = playerTransform.position;
                 break;
             case FSMStateType.RETURN:
+                target = Vector3.zero;
+                if (agent.isStopped) agent.isStopped = false;
                 break;
             case FSMStateType.ATTACK:
+                agent.isStopped = true;
+                stateTime = stats.waitBeforeAttack;
                 break;
             case FSMStateType.DEATH:
                 Destroy(gameObject, 2f);
@@ -87,40 +154,10 @@ public abstract class NPC : MonoBehaviour {
         }
     }
 
-    public virtual void FixedUpdate() {
-        if (!agent.isStopped) {
-            agent.SetDestination(spawnPoint + target);
-        }
-        // SetFSMState();
-        /*
-        if (target != null) {
-            if (Vector3.Distance(target.position, transform.position) < stats.scapeDistance) {
-                Vector3 scapePos = transform.position - target.position;
-                agent.SetDestination(scapePos.normalized * stats.attackRange);
-                spawnObject.transform.position = transform.position - scapePos;
-                agent.stoppingDistance = 0f;
-            } else {
-                agent.SetDestination(target.position);
-                agent.stoppingDistance = stats.attackRange;
-            }
 
-        } else if (spawnPoint != null) {
-            //spawnObject.transform.position = spawnPoint;
-        }
-        */
-
-        /*
-        if (Vector3.Distance(target.position, transform.position) < stats.detectionRange) {
-            agent.SetDestination(target.position);
-        } else {
-            target = null;
-        }
-        */
+    protected void AttackAction() {
+        Debug.Log("ATTACK!");
+        SetFSMState(FSMStateType.CHASE);
     }
 
-    private IEnumerator NewPatrolPoint() {
-        yield return new WaitForSeconds(stats.idleDuration);
-        FSMStateType newState = state == FSMStateType.PATROL ? FSMStateType.IDLE : FSMStateType.PATROL;
-        SetFSMState(newState);
-    }
 }

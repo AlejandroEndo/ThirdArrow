@@ -11,14 +11,12 @@ public class PlayerShootController : MonoBehaviour {
         objectPooler = GameManager.Instance;
     }
 
-
-
     void Update() {
         if (movementController.TriggerShoot) {
             Transform lookAt = movementController.aimingTo.transform;
             GameObject arrow = objectPooler.SpawnFromPool("Arrow", firePoint.position, lookAt.rotation);
             ///arrow.transform.LookAt(new Vector3(lookAt.x, firePoint.position.y, lookAt.y));
-            arrow.GetComponent<ArrowProjectile>().Fire();
+            arrow.GetComponent<ArrowProjectile>().Fire(firePoint);
             animationController.Fire();
         }
     }
